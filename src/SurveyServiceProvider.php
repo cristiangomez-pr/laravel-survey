@@ -3,8 +3,10 @@
 namespace MattDaneshvar\Survey;
 
 use Illuminate\Contracts\View\Factory as ViewFactory;
+use Illuminate\Support\Facades\Blade;
 use Illuminate\Support\ServiceProvider;
 use Illuminate\Support\Str;
+use Illuminate\View\Compilers\BladeCompiler;
 use MattDaneshvar\Survey\Http\View\Composers\SurveyComposer;
 
 class SurveyServiceProvider extends ServiceProvider
@@ -16,6 +18,54 @@ class SurveyServiceProvider extends ServiceProvider
      */
     public function boot(ViewFactory $viewFactory)
     {
+        $this->loadViewsFrom(__DIR__.'/../resources/views', 'survey');
+
+        $this->mergeConfigFrom(__DIR__.'/../config/survey.php', 'survey');
+
+        $viewFactory->composer('survey::standard', SurveyComposer::class);
+
+        $this->configureComponents();
+        $this->configurePublishing();
+    }
+
+       /**
+     * Configure the Jetstream Blade components.
+     *
+     * @return void
+     */
+    protected function configureComponents()
+    {
+        $this->callAfterResolving(BladeCompiler::class, function () {
+            $this->registerComponent('button');
+            $this->registerComponent('section-title');
+            $this->registerComponent('section-message');
+            $this->registerComponent('question-base');
+            $this->registerComponent('input');
+        });
+    }
+
+    /**
+     * Register the given component.
+     *
+     * @param  string  $component
+     * @return void
+     */
+    protected function registerComponent(string $component)
+    {
+        Blade::component('survey::components.'.$component, 'survey-'.$component);
+    }
+
+    /**
+     * Configure publishing for the package.
+     *
+     * @return void
+     */
+    protected function configurePublishing()
+    {
+        if (! $this->app->runningInConsole()) {
+            return;
+        }
+
         $this->publishes([
             __DIR__.'/../config/survey.php' => config_path('survey.php'),
         ], 'config');
@@ -24,18 +74,12 @@ class SurveyServiceProvider extends ServiceProvider
             __DIR__.'/../resources/views/' => base_path('resources/views/vendor/survey'),
         ], 'views');
 
-        $this->mergeConfigFrom(__DIR__.'/../config/survey.php', 'survey');
-
-        $this->loadViewsFrom(__DIR__.'/../resources/views', 'survey');
-
-        $viewFactory->composer('survey::standard', SurveyComposer::class);
-
         $this->publishMigrations([
             'create_surveys_table',
-            'create_questions_table',
-            'create_entries_table',
-            'create_answers_table',
-            'create_sections_table',
+            'create_survey_questions_table',
+            'create_survey_entries_table',
+            'create_survey_answers_table',
+            'create_survey_sections_table',
         ]);
     }
 

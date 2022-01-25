@@ -40,6 +40,13 @@ class Survey extends Model implements SurveyContract
         'settings' => 'array',
     ];
 
+    protected static function booted()
+    {
+        static::created(function ($survey) {
+            $survey->slug = \Illuminate\Support\Str::slug($survey->id.' '.$survey->name);
+        });
+    }
+
     /**
      * The survey sections.
      *

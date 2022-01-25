@@ -1,4 +1,4 @@
-<div class="p-4 border-bottom">
+<div>
     @include(view()->exists("survey::questions.types.{$question->type}") 
         ? "survey::questions.types.{$question->type}" 
         : "survey::questions.types.text",[

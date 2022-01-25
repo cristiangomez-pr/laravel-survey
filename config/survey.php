@@ -12,10 +12,10 @@ return [
          */
         'tables' => [
             'surveys' => 'surveys',
-            'sections' => 'sections',
-            'questions' => 'questions',
-            'entries' => 'entries',
-            'answers' => 'answers',
+            'sections' => 'survey_sections',
+            'questions' => 'survey_questions',
+            'entries' => 'survey_entries',
+            'answers' => 'survey_answers',
         ],
     ],
 ];

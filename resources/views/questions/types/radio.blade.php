@@ -1,22 +1,22 @@
-@component('survey::questions.base', compact('question'))
+<x-survey-question-base :question="$question">
     @foreach($question->options as $option)
-        <div class="custom-control custom-radio">
+        <div class="flex items-center">
             <input type="radio"
                    name="{{ $question->key }}"
                    id="{{ $question->key . '-' . Str::slug($option) }}"
                    value="{{ $option }}"
-                   class="custom-control-input"
+                   class="focus:ring-indigo-500 dark:focus:ring-0 h-4 w-4 text-indigo-600 border-gray-300"
                     {{ ($value ?? old($question->key)) == $option ? 'checked' : '' }}
                     {{ ($disabled ?? false) ? 'disabled' : '' }}
             >
-            <label class="custom-control-label"
+            <label class="ml-3 block text-sm font-medium text-slate-800 dark:text-slate-100"
                    for="{{ $question->key . '-' . Str::slug($option) }}">{{ $option }}
                 @if($includeResults ?? false)
-                    <span class="text-success">
+                    <span class="text-green-700">
                         ({{ number_format((new \MattDaneshvar\Survey\Utilities\Summary($question))->similarAnswersRatio($option) * 100, 2) }}%)
                     </span>
                 @endif
             </label>
         </div>
     @endforeach
-@endcomponent
+</x-survey-question-base>
