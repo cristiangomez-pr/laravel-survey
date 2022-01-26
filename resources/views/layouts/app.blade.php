@@ -10,22 +10,8 @@
         <!-- Fonts -->
         <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800&display=swap">
         <link rel="stylesheet" onload="this.onload=null;this.removeAttribute('media');" href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800&amp;display=swap">
+        <link rel="stylesheet" href="{{ asset(mix('app.css', 'vendor/survey')) }}">
 
-        <!-- Scripts -->
-        <script src="https://cdn.tailwindcss.com"></script>
-        <script>
-            tailwind.config = {
-              darkMode: 'class',
-              theme: {
-                extend: {
-                    fontFamily: {
-                        sans: ["Nunito"],
-                        heading: ["Inter"],
-                    },
-                }
-              },
-            }
-          </script>
     </head>
     
     <body class="font-sans antialiased">

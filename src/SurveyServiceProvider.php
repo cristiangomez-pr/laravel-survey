@@ -68,11 +68,15 @@ class SurveyServiceProvider extends ServiceProvider
 
         $this->publishes([
             __DIR__.'/../config/survey.php' => config_path('survey.php'),
-        ], 'config');
+        ], 'survey-config');
 
         $this->publishes([
-            __DIR__.'/../resources/views/' => base_path('resources/views/vendor/survey'),
-        ], 'views');
+            __DIR__.'/../resources/views' => base_path('resources/views/vendor/survey'),
+        ], 'survey-views');
+
+        $this->publishes([
+            __DIR__.'/../public' => base_path('vendor/survey'),
+        ], 'survey-assets');
 
         $this->publishMigrations([
             'create_surveys_table',
@@ -81,20 +85,6 @@ class SurveyServiceProvider extends ServiceProvider
             'create_survey_answers_table',
             'create_survey_sections_table',
         ]);
-    }
-
-    /**
-     * Register the application services.
-     *
-     * @return void
-     */
-    public function register()
-    {
-        $this->app->bind(\MattDaneshvar\Survey\Contracts\Answer::class, \MattDaneshvar\Survey\Models\Answer::class);
-        $this->app->bind(\MattDaneshvar\Survey\Contracts\Entry::class, \MattDaneshvar\Survey\Models\Entry::class);
-        $this->app->bind(\MattDaneshvar\Survey\Contracts\Question::class, \MattDaneshvar\Survey\Models\Question::class);
-        $this->app->bind(\MattDaneshvar\Survey\Contracts\Section::class, \MattDaneshvar\Survey\Models\Section::class);
-        $this->app->bind(\MattDaneshvar\Survey\Contracts\Survey::class, \MattDaneshvar\Survey\Models\Survey::class);
     }
 
     /**
@@ -114,7 +104,21 @@ class SurveyServiceProvider extends ServiceProvider
             $this->publishes([
                 __DIR__."/../database/migrations/$migration.php.stub" => database_path('migrations/'.date('Y_m_d_His',
                         time())."_$migration.php"),
-            ], 'migrations');
+            ], 'survey-migrations');
         }
+    }
+
+    /**
+     * Register the application services.
+     *
+     * @return void
+     */
+    public function register()
+    {
+        $this->app->bind(\MattDaneshvar\Survey\Contracts\Answer::class, \MattDaneshvar\Survey\Models\Answer::class);
+        $this->app->bind(\MattDaneshvar\Survey\Contracts\Entry::class, \MattDaneshvar\Survey\Models\Entry::class);
+        $this->app->bind(\MattDaneshvar\Survey\Contracts\Question::class, \MattDaneshvar\Survey\Models\Question::class);
+        $this->app->bind(\MattDaneshvar\Survey\Contracts\Section::class, \MattDaneshvar\Survey\Models\Section::class);
+        $this->app->bind(\MattDaneshvar\Survey\Contracts\Survey::class, \MattDaneshvar\Survey\Models\Survey::class);
     }
 }
