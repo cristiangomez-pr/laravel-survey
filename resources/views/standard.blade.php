@@ -1,33 +1,38 @@
-<div class="card">
-    <div class="card-header bg-white p-4">
-        <h2 class="mb-0">{{ $survey->name }}</h2>
+<x-survey-layout>
+    <div class="bg-white dark:bg-slate-900  min-h-screen py-6 flex sm:py-12">
+        <div class="max-w-screen-sm mx-auto">
+            <x-survey-section-title>{{ $survey->name }}</x-survey-section-title>
+            
+            <x-survey-section-message :eligible="!$eligible">
+                <x-slot name="participant">
+                    {{ $survey->limitPerParticipant() }} {{ __(Str::plural('entry', $survey->limitPerParticipant())) }}
+                </x-slot>
 
-        @if(!$eligible)
-            We only accept
-            <strong>{{ $survey->limitPerParticipant() }} {{ \Str::plural('entry', $survey->limitPerParticipant()) }}</strong>
-            per participant.
-        @endif
-
-        @if($lastEntry)
-            You last submitted your answers <strong>{{ $lastEntry->created_at->diffForHumans() }}</strong>.
-        @endif
-
-    </div>
-    @if(!$survey->acceptsGuestEntries() && auth()->guest())
-        <div class="p-5">
-            Please login to join this survey.
+                <x-slot name="lastEntry">
+                    {{ $lastEntry->created_at->diffForHumans() }}
+                </x-slot>
+            </x-survey-section-message>
+            
+            @if(!$survey->acceptsGuestEntries() && auth()->guest())
+            <div class="text-center">
+                Inicie sesión para unirse a esta encuesta.
+            </div>
+            @else
+            <form class="pt-8 space-y-8" action="{{ route('survey.complete', $survey) }}" method="post">
+                @csrf
+                @foreach($survey->sections as $section)
+                    @include('survey::sections.single')
+                @endforeach
+        
+                @foreach($survey->questions()->withoutSection()->get() as $question)
+                    @include('survey::questions.single')
+                @endforeach
+        
+                @if($eligible)
+                    <x-survey-button>Finalizar</x-survey-button>
+                @endif
+            </form>
+            @endif
         </div>
-    @else
-        @foreach($survey->sections as $section)
-            @include('survey::sections.single')
-        @endforeach
-
-        @foreach($survey->questions()->withoutSection()->get() as $question)
-            @include('survey::questions.single')
-        @endforeach
-
-        @if($eligible)
-            <button class="btn btn-primary">Submit</button>
-        @endif
-    @endif
-</div>
+    </div>
+</x-survey-layout>

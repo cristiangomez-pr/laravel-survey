@@ -1,10 +1,16 @@
-@component('survey::questions.base', compact('question'))
-    <input type="number" name="{{ $question->key }}" id="{{ $question->key }}" class="form-control"
-           value="{{ $value ?? old($question->key) }}" {{ ($disabled ?? false) ? 'disabled' : '' }}>
-    
-    @slot('report')
+<x-survey-question-base :question="$question">
+    <x-survey-input 
+        autocomplete="off" 
+        type="number" 
+        name="{{ $question->key }}" 
+        id="{{ $question->key }}" 
+        value="{{ $value ?? old($question->key) }}" 
+        :disabled="$disabled ?? false"
+    />
+
+    <x-slot name="report">
         @if($includeResults ?? false)
-            {{ number_format((new \MattDaneshvar\Survey\Utilities\Summary($question))->average()) }} (Average)
+            {{ number_format((new \MattDaneshvar\Survey\Utilities\Summary($question))->average()) }} (Promedio)
         @endif
-    @endslot
-@endcomponent
+    </x-slot>
+</x-survey-question-base>

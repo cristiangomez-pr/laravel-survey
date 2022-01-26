@@ -1,13 +1,9 @@
-# PHPstorm
 /.phpstorm.meta.php
 /_ide_helper.php
 /.idea
 /.project
-
-# Phpunit
 .phpunit.result.cache
 build/
-
-# Composer
 vendor/
 composer.lock
+/node_modules
