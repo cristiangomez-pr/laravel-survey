@@ -1,16 +1,20 @@
 <x-survey-layout>
-    <div class="bg-white dark:bg-slate-900  min-h-screen py-6 flex sm:py-12">
+    <div class="bg-white dark:bg-slate-900  min-h-screen py-6 flex sm:py-10">
         <div class="max-w-screen-sm mx-auto">
             <x-survey-section-title>{{ $survey->name }}</x-survey-section-title>
             
             <x-survey-section-message :eligible="!$eligible">
+                @if(!$eligible)
                 <x-slot name="participant">
                     {{ $survey->limitPerParticipant() }} {{ __(Str::plural('entry', $survey->limitPerParticipant())) }}
                 </x-slot>
+                @endif
 
+                @if($lastEntry)
                 <x-slot name="lastEntry">
                     {{ $lastEntry->created_at->diffForHumans() }}
                 </x-slot>
+                @endif
             </x-survey-section-message>
             
             @if(!$survey->acceptsGuestEntries() && auth()->guest())

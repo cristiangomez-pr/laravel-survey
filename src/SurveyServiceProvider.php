@@ -4,9 +4,12 @@ namespace MattDaneshvar\Survey;
 
 use Illuminate\Contracts\View\Factory as ViewFactory;
 use Illuminate\Support\Facades\Blade;
+use Illuminate\Support\Facades\Route;
 use Illuminate\Support\ServiceProvider;
 use Illuminate\Support\Str;
 use Illuminate\View\Compilers\BladeCompiler;
+use Livewire\Livewire;
+use MattDaneshvar\Survey\Http\Livewire\SurveySearch;
 use MattDaneshvar\Survey\Http\View\Composers\SurveyComposer;
 
 class SurveyServiceProvider extends ServiceProvider
@@ -24,11 +27,24 @@ class SurveyServiceProvider extends ServiceProvider
 
         $viewFactory->composer('survey::standard', SurveyComposer::class);
 
+        $this->configureRoutes();
         $this->configureComponents();
         $this->configurePublishing();
     }
 
-       /**
+    /**
+     * Register the package routes.
+     *
+     * @return void
+     */
+    private function configureRoutes()
+    {
+        Route::middlewareGroup('survey', config('survey.middleware', []));
+
+        $this->loadRoutesFrom(__DIR__.'/Http/routes.php');
+    }
+
+    /**
      * Configure the Jetstream Blade components.
      *
      * @return void
@@ -75,7 +91,7 @@ class SurveyServiceProvider extends ServiceProvider
         ], 'survey-views');
 
         $this->publishes([
-            __DIR__.'/../public' => base_path('vendor/survey'),
+            __DIR__.'/../public' => public_path('vendor/survey'),
         ], 'survey-assets');
 
         $this->publishMigrations([
@@ -120,5 +136,9 @@ class SurveyServiceProvider extends ServiceProvider
         $this->app->bind(\MattDaneshvar\Survey\Contracts\Question::class, \MattDaneshvar\Survey\Models\Question::class);
         $this->app->bind(\MattDaneshvar\Survey\Contracts\Section::class, \MattDaneshvar\Survey\Models\Section::class);
         $this->app->bind(\MattDaneshvar\Survey\Contracts\Survey::class, \MattDaneshvar\Survey\Models\Survey::class);
+
+        $this->app->afterResolving(BladeCompiler::class, function () {
+            Livewire::component('survey-search', SurveySearch::class);
+        });
     }
 }

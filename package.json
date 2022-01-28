@@ -10,6 +10,7 @@
         "production": "mix --production"
     },
     "devDependencies": {
+        "alpinejs": "^3.8.1",
         "autoprefixer": "^10.4.2",
         "laravel-mix": "^6.0.39",
         "postcss": "^8.4.5",

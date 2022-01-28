@@ -5,7 +5,7 @@
                    name="{{ $question->key }}"
                    id="{{ $question->key . '-' . Str::slug($option) }}"
                    value="{{ $option }}"
-                   class="focus:ring-indigo-500 dark:focus:ring-0 h-4 w-4 text-indigo-600 border-gray-300"
+                   class="focus:ring-blue-500 dark:focus:ring-0 h-4 w-4 text-blue-600 border-gray-300"
                     {{ ($value ?? old($question->key)) == $option ? 'checked' : '' }}
                     {{ ($disabled ?? false) ? 'disabled' : '' }}
             >
