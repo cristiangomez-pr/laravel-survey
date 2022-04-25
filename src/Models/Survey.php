@@ -7,6 +7,7 @@ use MattDaneshvar\Survey\Contracts\Entry;
 use MattDaneshvar\Survey\Contracts\Question;
 use MattDaneshvar\Survey\Contracts\Section;
 use MattDaneshvar\Survey\Contracts\Survey as SurveyContract;
+use Illuminate\Support\Str;
 
 class Survey extends Model implements SurveyContract
 {
@@ -42,9 +43,8 @@ class Survey extends Model implements SurveyContract
 
     protected static function booted()
     {
-        static::created(function ($survey) {
-            $survey->slug = \Illuminate\Support\Str::slug($survey->id.' '.$survey->name);
-        });
+        static::created(fn ($survey) => $survey->slug = Str::slug($survey->id.' '.$survey->name));
+        static::updated(fn ($survey) => $survey->slug = Str::slug($survey->id.' '.$survey->name));
     }
 
     /**

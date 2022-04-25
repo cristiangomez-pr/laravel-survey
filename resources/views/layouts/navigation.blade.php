@@ -16,7 +16,7 @@
         <div class="ml-3 relative">
           <div>
             <button type="button" class="flex text-sm focus:outline-none items-center space-x-2" id="user-menu-button" aria-expanded="false" aria-haspopup="true">
-              <img class="h-8 w-8 rounded-full" src="{{ auth()->user()?->avatar_url }}">
+              <img class="h-8 w-8 rounded-full" src="{{ auth()->user()?->profile_photo_url }}">
               <span class="text-slate-500 font-medium text-sm">{{ auth()->user()->name }}</span>
             </button>
           </div>
