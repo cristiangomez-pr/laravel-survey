@@ -30,7 +30,7 @@ class Survey extends Model implements SurveyContract
      *
      * @var array
      */
-    protected $fillable = ['name', 'settings'];
+    protected $fillable = ['name', 'settings', 'slug'];
 
     /**
      * The attributes that should be casted.
@@ -41,10 +41,10 @@ class Survey extends Model implements SurveyContract
         'settings' => 'array',
     ];
 
-    protected static function booted()
+    public function setNameAttribute($value)
     {
-        static::created(fn ($survey) => $survey->slug = Str::slug($survey->id.' '.$survey->name));
-        static::updated(fn ($survey) => $survey->slug = Str::slug($survey->id.' '.$survey->name));
+        $this->attributes['name'] = $value;
+        $this->attributes['slug'] = Str::slug($this->id.' '.$value);
     }
 
     /**

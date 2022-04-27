@@ -10,6 +10,10 @@ use Illuminate\Support\Str;
 use Illuminate\View\Compilers\BladeCompiler;
 use Livewire\Livewire;
 use MattDaneshvar\Survey\Http\Livewire\SurveySearch;
+use MattDaneshvar\Survey\Http\Livewire\CreateSurveyForm;
+use MattDaneshvar\Survey\Http\Livewire\UpdateSurveyForm;
+use MattDaneshvar\Survey\Http\Livewire\QuestionSurveyForm;
+use MattDaneshvar\Survey\Http\Livewire\QuestionSurveyUpdateForm;
 use MattDaneshvar\Survey\Http\View\Composers\SurveyComposer;
 
 class SurveyServiceProvider extends ServiceProvider
@@ -57,6 +61,7 @@ class SurveyServiceProvider extends ServiceProvider
             $this->registerComponent('section-message');
             $this->registerComponent('question-base');
             $this->registerComponent('input');
+            $this->registerComponent('checkbox');
         });
     }
 
@@ -139,6 +144,10 @@ class SurveyServiceProvider extends ServiceProvider
 
         $this->app->afterResolving(BladeCompiler::class, function () {
             Livewire::component('survey-search', SurveySearch::class);
+            Livewire::component('create-survey-form', CreateSurveyForm::class);
+            Livewire::component('update-survey-form', UpdateSurveyForm::class);
+            Livewire::component('question-survey-form', QuestionSurveyForm::class);
+            Livewire::component('question-survey-update-form', QuestionSurveyUpdateForm::class);
         });
     }
 }

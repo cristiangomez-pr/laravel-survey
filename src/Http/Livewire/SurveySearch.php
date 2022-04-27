@@ -35,6 +35,6 @@ class SurveySearch extends Component
 
     public function render()
     {
-        return view('survey::livewire.survey-search');
+        return view('survey::survey.survey-search');
     }
 }

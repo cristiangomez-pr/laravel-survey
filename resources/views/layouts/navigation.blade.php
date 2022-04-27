@@ -5,7 +5,7 @@
         <div class="hidden sm:block">
           <div class="flex space-x-4">
             @if(auth()->check())
-            <a href="{{ route('surveys.admin') }}" class="text-slate-800 hover:underline @if(request()->routeIs('surveys.admin')) font-bold @else font-medium  @endif">Administrar cuestionarios</a>
+            <a href="{{ route('surveys') }}" class="text-slate-800 hover:underline @if(request()->routeIs('surveys')) font-bold @else font-medium  @endif">Administrar cuestionarios</a>
             @endif
           </div>
         </div>

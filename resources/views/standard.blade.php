@@ -22,7 +22,7 @@
                 Inicie sesión para unirse a esta encuesta.
             </div>
             @else
-            <form class="pt-8 space-y-8" action="{{ route('survey.complete', $survey) }}" method="post">
+            <form class="pt-8 space-y-8" action="{{ route('surveys.complete', $survey) }}" method="post">
                 @csrf
                 @foreach($survey->sections as $section)
                     @include('survey::sections.single')

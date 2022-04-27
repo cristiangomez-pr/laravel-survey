@@ -10,6 +10,8 @@ class SurveysController extends Controller
 {
     public function show(Request $request, Survey $survey)
     {
+        abort_unless($survey->questions->count(), '403', 'Lo sentimos, esta encuesta no está lista para ser completada');
+
         return view('survey::standard', ['survey' => $survey]);
     }
 
@@ -19,6 +21,6 @@ class SurveysController extends Controller
 
         (new Entry())->for($survey)->by($request->user())->fromArray($answers)->push();
 
-        return redirect()->route('survey.start', $survey->slug)->withSuccess('Encuesta completada con éxito.');
+        return redirect()->route('surveys.start', $survey->slug)->withSuccess('Encuesta completada con éxito.');
     }
 }

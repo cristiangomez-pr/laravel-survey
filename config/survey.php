@@ -26,7 +26,7 @@ return [
     |
     */
 
-    'path' => env('SURVEY_PATH', 'survey-manager'),
+    'path' => env('SURVEY_PATH', 'admin'),
 
     /*
     |--------------------------------------------------------------------------
